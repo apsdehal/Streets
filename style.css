@@ -56,3 +56,9 @@ body{
 	z-index: 5;
 	position: absolute;
 }
+
+.result{
+	margin: auto;
+	width: 70%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
