@@ -6,7 +6,7 @@ var currentStats = {
     pitch: '0'
 };
 
-
+var ip = '192.168.43.236';
 var documentWidth;
 var documentHeight;
 var mapSize;
@@ -69,6 +69,7 @@ function turnRight() {
     };
 
     currentStats.heading += 5;
+    currentStats.heading %= 360;
     var initialQuery = getQuery(params);
     imageChange(getQuery(params));
 };
@@ -110,6 +111,7 @@ function turnLeft() {
     };
 
     currentStats.heading -= 5;
+    currentStats.heading %= 360;
     var initialQuery = getQuery(params);
     imageChange(getQuery(params));
 };
@@ -200,10 +202,70 @@ function initKeyBindings() {
         };
     });
 };
+var sCanvas, sContext;
+function initCanvas() {
+    sCanvas = document.createElement('canvas');
+    sContext = sCanvas.getContext('2d');
+    sCanvas.width = 500 ;
+    sCanvas.height = 500;
+    document.getElementsByTagName('body')[0].appendChild(sCanvas);
+}
+function renderCanvas(data) {
+    var head = {}, rs = {}, ls = {}, rh = {}, re = {}, lh = {}, le = {}, lf = {}, rf = {}, cs = {}, lk = {}, rk ={}, hc ={};
+    head.x = data.head[0];
+    head.y = data.head[1];
+    rs.y = data.rs[1];
+    rs.x = data.rs[0];
+    ls.y = data.ls[1];
+    ls.x = data.ls[0];
+    rh.y = data.rh[1];
+    rh.x = data.rh[0];
+    re.y = data.re[1];
+    re.x = data.re[0];
+    lh.y = data.lh[1];
+    lh.x = data.lh[0];
+    le.y = data.le[1];
+    le.x = data.le[0];
+    lf.x = data.lf[0];
+    lf.y = data.lf[1];
+    rf.x = data.rf[0];
+    rf.y = data.rf[1];
+    cs.x = data.cs[0];
+    cs.y = data.cs[1];
+    hc.x = data.hc[0];
+    hc.y = data.hc[1];
+    lk.x = data.lk[0];
+    lk.y = data.lk[1];
+    rk.x = data.rk[0];
+    rk.y = data.rk[1];
 
+   drawLine(head, cs);
+   drawLine(cs, rs);
+   drawLine(cs, ls);
+   drawLine(ls, le);
+   drawLine(rs, re);
+   drawLine(re, rh);
+   drawLine(le, lh);
+   drawLine(cs, hc);
+   drawLine(hc, lk);
+   drawLine(hc, rk);
+   drawLine(rk, rf);
+   drawLine(hc, lk);
+   drawLine(lk, lf);
 
+}
+
+function drawLine(obj1, obj2) {
+    sContext.beginPath();
+    sContext.moveTo(obj1.x1, obj1.y1);
+    sContext.lineTo(obj2.x2, obj2.y2);
+    sContext.strokeStyle = 'green';
+    sContext.stroke();
+};
+
+var swag = 1;
 function connectWebSocket() {
-    var conn = new WebSocket('ws://192.168.0.125:8080');
+    var conn = new WebSocket('ws://' + ip + ':8080');
 
     // var data = {x:0, y:0};
     // gestureHandler.handleAction('beam', data);
@@ -217,6 +279,17 @@ function connectWebSocket() {
         data = data.split("&");
         var eventName = data[0].split("=")[1];
         var command = data[1].split("=")[1];
+        if (eventName == 'canvas') {
+            if (swag) {
+                command = JSON.parse(command);
+                renderCanvas(command);
+                swag = 0;
+                window.setTimeout(function () {
+                    swag = 1;
+                }, 1000)
+            }
+            return
+        }
         if (eventName == 'speech') {
             handleCommand(eventName, command);
         }
@@ -345,7 +418,8 @@ $(document).ready( function () {
 
     init();
     initKeyBindings();
-    initTweets('Redmond')
+    initTweets('Redmond');
+    initCanvas();
     getCurrentLocationLatLong();
     connectWebSocket();
 });
