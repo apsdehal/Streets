@@ -13,7 +13,7 @@ var mapSize;
 
 
 function getQuery(params) {
-    console.log(currentStats);
+    // console.log(currentStats);
     var baseUrl = 'https://maps.googleapis.com/maps/api/streetview?';
     if (params.location) {
         baseUrl += 'location=' + params.location + '&';
@@ -150,6 +150,18 @@ function moveForward() {
 };
 
 function moveBackward() {
+    var lat       = Number(currentStats.latitude + 0.0001).toFixed(7);
+    var longitude = Number(currentStats.longitude + 0.0001).toFixed(7);
+    currentStats.latitude = lat;
+    currentStats.longitude = longitude;
+    var location  = lat + ',' + longitude;
+    var params = {
+        location: location,
+        size: mapSize,
+        heading: currentStats.heading,
+        pitch: currentStats.pitch
+    };
+    imageChange(getQuery(params));
 
 };
 
@@ -194,6 +206,9 @@ function connectWebSocket() {
         data = data.split("&");
         var eventName = data[0].split("=")[1];
         var command = data[1].split("=")[1];
+        if (eventName == 'speech') {
+            handleCommand(eventName, command);
+        }
         if (events[eventName]) {
             if (events[eventName][command]) {
                 events[eventName][command]++;
@@ -237,11 +252,14 @@ function handleSpeech(command) {
         case 'fly to new york':
             switchToPlace('New York');
             break;
-        case 'fly to london':
-            switchToPlace('London');
+        case 'fly to miami':
+            switchToPlace('Miami');
             break;
         case 'fly to new delhi':
             switchToPlace('New Delhi');
+            break;
+        case 'fly to paris':
+            switchToPlace('Paris');
             break;
         case 'third person':
             switchToThirdPerson();
@@ -249,6 +267,8 @@ function handleSpeech(command) {
         case 'first person':
             switchToFirstPerson();
             break;
+        case 'search for paris':
+            displaysearch();
     }
 }
 
@@ -279,7 +299,9 @@ function switchToPlace(place) {
         heading: '0'
     };
     initTweets(place);
+    removesearch();
     currentStats.location = place;
+    getCurrentLocationLatLong();
     imageChange(getQuery(params));
 
 };
