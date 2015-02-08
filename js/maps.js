@@ -6,7 +6,7 @@ var currentStats = {
     pitch: '0'
 };
 
-var ip = '192.168.43.236';
+var ip = '127.0.0.1';
 var documentWidth;
 var documentHeight;
 var mapSize;
@@ -372,7 +372,7 @@ function handleSpeech(command) {
         case 'first person':
             switchToFirstPerson();
             break;
-        case 'search for paris':
+        case 'search for rome':
             displaysearch();
     }
 }

@@ -9,7 +9,7 @@ $('.search-input').focusout( function(){
 });
 
 function displaysearch(){
-	$('.search-input').val('Paris');
+	$('.search-input').val('Rome');
 	$('.search-result').css("display","block");
 }
 
