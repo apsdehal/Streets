@@ -74,18 +74,28 @@ function turnRight() {
 };
 
 function initTweets(city) {
-
+    if (city == 'Redmond')
+    {
+        url = 'hardcode/seattle.json';
+    }
+    else if (city == 'Paris')
+    {
+        url = 'hardcode/paris.json';
+    }
+    else
+    {
+        url = 'hardcode/miami.json';
+    }
     $.ajax({
-        url: 'http://jeopardy.sdslabs.local/twitter',
-        data: {city: city},
+        url: url,
         dataType: 'json',
         success: function (data) {
             $('.tweets').text('Tweets from #' + city);
             var html = '';
             for (var i = 0; i < data.statuses.length; i++) {
-                var name = data.statuses[i].name;
+                var name = data.statuses[i].user.name;
                 var text = data.statuses[i].text;
-                html += '<div class="tweet><span>' + name + '</span><span class="tweet-content">' + text + '</div>';
+                html += '<div class="tweet"><span>' + name + '</span><span class="tweet-content">' + text + '</div>';
             }
             $('.swag').html(html);
         }
@@ -217,7 +227,7 @@ function connectWebSocket() {
                 events[eventName] = 1;
             }
 
-            if (events[eventName] > 50) {
+            if (events[eventName] > 20) {
                 handleCommand(eventName, command);
                 events[eventName] = 1;
             }
@@ -235,7 +245,7 @@ function connectWebSocket() {
             events[eventName][command] = 1;
         }
 
-        if (events[eventName][command] >= 50) {
+        if (events[eventName][command] >= 20) {
             events[eventName][command] = 1;
             handleCommand(eventName, command);
         }
