@@ -9,9 +9,11 @@ $('.search-input').focusout( function(){
 });
 
 function displaysearch(){
+	$('.search-input').val('Paris');
 	$('.search-result').css("display","block");
 }
 
 function removesearch(){
+	$('.search-input').val('');
 	$('.search-result').css("display","none");
 }
