@@ -30,8 +30,11 @@ function getQuery(params) {
     }
 
     if (params.pitch) {
-        baseUrl += 'pitch=' + params.pitch;
+        baseUrl += 'pitch=' + params.pitch + '&';
     }
+
+    baseUrl +='key=AIzaSyACmklUUFJAOFAWQrDBEd_eMqroq859rxE'
+
     return baseUrl;
 };
 
@@ -70,6 +73,23 @@ function turnRight() {
     imageChange(getQuery(params));
 };
 
+function initTweets(city) {
+    $.ajax({
+        url: 'http://jeopardy.sdslabs.local/twitter',
+        data: {city: city},
+        dataType: 'jsonp',
+        success: function (data) {
+            $('.tweets').text('Tweets from #' + city);
+            var html = '';
+            for (var i = 0; i < data.statuses.length; i++) {
+                var name = data.statuses[i].name;
+                var text = data.statuses[i].text;
+                html += '<div class="tweet><span>' + name + '</span><span class="tweet-content">' + text + '</div>';
+            }
+            $('.swag').html(html);
+        }
+    });
+}
 function turnLeft() {
     var params = {
         location: currentStats.location,
@@ -174,18 +194,95 @@ function connectWebSocket() {
         data = data.split("&");
         var eventName = data[0].split("=")[1];
         var command = data[1].split("=")[1];
-        if (events[eventName][command]) {
-            events[eventName][command]++;
+        if (events[eventName]) {
+            if (events[eventName][command]) {
+                events[eventName][command]++;
+            } else {
+                events[eventName][command] = 1;
+            }
+            console.log(events[eventName][command], command);
         } else {
+            events[eventName] = {};
             events[eventName][command] = 1;
         }
 
         if (events[eventName][command] >= 50) {
-            events[eventName][command] = 0;
+            events[eventName][command] = 1;
+            handleCommand(eventName, command);
         }
     };
 
+};
+
+function handleCommand(eventName, command) {
+    switch (eventName) {
+        case 'speech':
+            handleSpeech(command);
+            break;
+        case 'turn':
+            handleTurn(command);
+            break;
+        case 'backward':
+            handleBackward(command);
+            break;
+        case 'forward':
+            handleForward(command);
+            break;
+    };
 }
+
+
+function handleSpeech(command) {
+    switch(command) {
+        case 'fly to new york':
+            switchToPlace('New York');
+            break;
+        case 'fly to london':
+            switchToPlace('London');
+            break;
+        case 'fly to new delhi':
+            switchToPlace('New Delhi');
+            break;
+        case 'third person':
+            switchToThirdPerson();
+            break;
+        case 'first person':
+            switchToFirstPerson();
+            break;
+    }
+}
+
+
+function handleTurn(command) {
+    switch(command) {
+        case 'left':
+            console.log('left');
+            turnLeft();
+            break;
+        case 'right':
+            console.log('right');
+            turnRight();
+            break;
+       case 'up':
+            lookUp();
+            break;
+        case 'down':
+            lookDown();
+            break;
+    };
+}
+
+function switchToPlace(place) {
+    var params = {
+        location: place,
+        size: mapSize,
+        heading: '0'
+    };
+    initTweets(place);
+    currentStats.location = place;
+    imageChange(getQuery(params));
+
+};
 
 $(document).ready( function () {
     documentWidth = $(document).width();
@@ -194,6 +291,7 @@ $(document).ready( function () {
 
     init();
     initKeyBindings();
+    initTweets('Redmond')
     getCurrentLocationLatLong();
     connectWebSocket();
 });
