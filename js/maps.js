@@ -74,10 +74,11 @@ function turnRight() {
 };
 
 function initTweets(city) {
+
     $.ajax({
         url: 'http://jeopardy.sdslabs.local/twitter',
         data: {city: city},
-        dataType: 'jsonp',
+        dataType: 'json',
         success: function (data) {
             $('.tweets').text('Tweets from #' + city);
             var html = '';
@@ -209,6 +210,19 @@ function connectWebSocket() {
         if (eventName == 'speech') {
             handleCommand(eventName, command);
         }
+        if (eventName == 'forward' || eventName == 'backward') {
+            if (events[eventName]) {
+                events[eventName]++;
+            } else {
+                events[eventName] = 1;
+            }
+
+            if (events[eventName] > 50) {
+                handleCommand(eventName, command);
+                events[eventName] = 1;
+            }
+            return;
+        }
         if (events[eventName]) {
             if (events[eventName][command]) {
                 events[eventName][command]++;
@@ -244,6 +258,14 @@ function handleCommand(eventName, command) {
             handleForward(command);
             break;
     };
+}
+
+function handleBackward(command) {
+    moveBackward();
+}
+
+function handleForward() {
+    moveForward();
 }
 
 
