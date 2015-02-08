@@ -1,0 +1,36 @@
+.head{
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1); width: 100%; padding-bottom: 10px; padding-top: 10px; background: #ffffff; color: #777; text-align: center; font-size: 36px;
+}
+
+.container-30{
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);float:right; width: 30%; padding-bottom: 10px; padding-top: 10px; background: #ffffff; color: #777; text-align: center; font-size: 32px
+}
+
+.container-70{
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);float:right; width: 70%; padding-bottom: 10px; padding-top: 10px; background: #ffffff; color: #777; text-align: center; font-size: 32px
+}
+
+.tweets{
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1); width: 100%; padding-bottom: 4px; padding-top: 14px; background: #ffffff; color: #777; text-align: center; font-size: 24px;
+}
+
+.tweet{
+	width: 100%; padding-bottom: 4px; padding-top: 2px; background: #ffffff; color: #777; text-align: center; font-size: 18px;
+}
+
+.user-nm{
+}
+
+.tweet-content{
+	font-weight: 50%; font-size: 14px;
+}
+
+.search-box{
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1); width: 100%; padding-bottom: 4px; padding-top: 2px; background: #ffffff; color: #777; text-align: center; font-size: 24px;
+}
+
+.result{
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1); width: 69.2%; padding-bottom: 4px; padding-top: 2px; background: #ffffff; color: #777; text-align: center; font-size: 24px;
+	z-index: 5;
+	position: absolute;
+}
