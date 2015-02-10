@@ -10,7 +10,7 @@ var ip = '192.168.43.38';
 var documentWidth;
 var documentHeight;
 var mapSize;
-
+var key = '';
 
 function getQuery(params) {
     // console.log(currentStats);
@@ -33,7 +33,7 @@ function getQuery(params) {
         baseUrl += 'pitch=' + params.pitch + '&';
     }
 
-    baseUrl +='key=AIzaSyACmklUUFJAOFAWQrDBEd_eMqroq859rxE'
+    baseUrl +='key=' + key;
 
     return baseUrl;
 };
