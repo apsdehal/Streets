@@ -6,7 +6,7 @@ var currentStats = {
     pitch: '0'
 };
 
-var ip = '127.0.0.1';
+var ip = '192.168.43.38';
 var documentWidth;
 var documentHeight;
 var mapSize;
@@ -206,9 +206,10 @@ var sCanvas, sContext;
 function initCanvas() {
     sCanvas = document.createElement('canvas');
     sContext = sCanvas.getContext('2d');
-    sCanvas.width = 500 ;
-    sCanvas.height = 500;
-    document.getElementsByTagName('body')[0].appendChild(sCanvas);
+    sCanvas.width = 640 ;
+    sCanvas.height = 537;
+    sCanvas.style.cssText =  'z-index:100;position:relative;top:-540px;';
+    $('.main').append(sCanvas);
 }
 function renderCanvas(data) {
     var head = {}, rs = {}, ls = {}, rh = {}, re = {}, lh = {}, le = {}, lf = {}, rf = {}, cs = {}, lk = {}, rk ={}, hc ={};
