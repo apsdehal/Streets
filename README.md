@@ -9,7 +9,7 @@ Features:
 - First and Third Person Views
 - Keyboard Navigation
 
-Built during 24 hrs code.fun.do Microsoft hackathon with @vishrutmishra @divijbindlish
+Built during 24 hrs code.fun.do Microsoft hackathon with [@vishrutmishra](https://github.com/vishrutmishra) [@divijbindlish](https://github.com/divijbindlish)
 
 Contender in last 8 among 77 teams.
 
